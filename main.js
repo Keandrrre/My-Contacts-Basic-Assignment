@@ -1,47 +1,88 @@
 // My Contacts Basic
 
 // HTML Elements
-let goBtnEl = document.getElementById('go-btn');
-let menuEl = document.getElementById('menu');
-let outputEl = document.getElementById('output');
+let goBtnEl = document.getElementById("go-btn");
+let menuEl = document.getElementById("menu");
+let outputEl = document.getElementById("output");
+
+// Global Variables
+let contacts = loadContacts();
 
 // Go Btn - Menu Listener
-goBtnEl.addEventListener('click', goBtnHandler);
+goBtnEl.addEventListener("click", goBtnHandler);
 
 function goBtnHandler() {
   // Get Menu Selection
   let selection = menuEl.value;
 
-  if (selection === 'display-all') {
+  if (selection === "display-all") {
     displayContacts();
-  } else if (selection === 'add') {
+  } else if (selection === "add") {
     addContact();
-  } else if (selection === 'remove') {
+  } else if (selection === "remove") {
     removeContact();
-  } else if (selection === 'display-name') {
+  } else if (selection === "display-name") {
     displayByName();
-  } else if (selection === 'display-country') {
+  } else if (selection === "display-country") {
     displayByCountry();
   }
 }
 
 // MENU FUNCTIONS
 function displayContacts() {
-  console.log('Display Contacts');
+  let outputStr = "";
+  for (i = 0; i < contacts.length; i++) {
+    outputStr += getContactHTMLStr(contacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
 
 function addContact() {
-  console.log('Add Contact');
+  let contactsName = prompt("Enter Contacts Name: ");
+  let contactsEmail = prompt("Enter Contacts Email");
+  let contactsNumber = prompt("Enter Contacts Phone #");
+  let contactsCountry = prompt("Enter Contacts Country");
+  contacts.push(
+    newContact(contactsName, contactsEmail, contactsNumber, contactsCountry)
+  );
+  saveContacts();
 }
 
 function removeContact() {
-  console.log('Remove Contact');
+  let index = prompt("Enter # of Contact");
+  if (index >= 0 && index < contacts.length) {
+    contacts.splice(index, 1);
+  }
 }
 
 function displayByName() {
-  console.log('Display by Name');
+  console.log("Display by Name");
 }
 
 function displayByCountry() {
-  console.log('Display by Country');
+  console.log("Display by Country");
+}
+
+// Helper Functions
+
+function newContact(contactName, contactEmail, contactNumber, contactCountry) {
+  return {
+    name: contactName,
+    email: contactEmail,
+    number: contactNumber,
+    country: contactCountry,
+  };
+}
+
+function saveContacts() {
+  localStorage.setItem("contacts", JSON.stringify(contacts));
+}
+
+function loadContacts() {
+  let contactsStr = localStorage.getItem("contacts");
+  return JSON.parse(contactsStr) ?? [];
+}
+
+function getContactHTMLStr(contacts, i) {
+  return `<div>${i}: ${contacts.name}</div> `;
 }
