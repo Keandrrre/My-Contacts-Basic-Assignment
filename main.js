@@ -52,16 +52,23 @@ function removeContact() {
   let index = prompt("Enter # of Contact");
   if (index >= 0 && index < contacts.length) {
     contacts.splice(index, 1);
+    saveContacts();
   }
 }
 
 function displayByName() {
-  console.log("Display by Name");
+  let name = prompt("Enter Contacts Name");
+  let outputStr = "";
+  for (i = 0; i < contacts.length; i++) {
+    if (contacts[i].name == name) {
+      outputStr = getContactHTMLStr(contacts[i], i);
+    } else {
+      outputStr = "Contact Not Found";
+    }
+  }
+  outputEl.innerHTML = outputStr;
 }
-
-function displayByCountry() {
-  console.log("Display by Country");
-}
+function displayByCountry() {}
 
 // Helper Functions
 
@@ -84,5 +91,5 @@ function loadContacts() {
 }
 
 function getContactHTMLStr(contacts, i) {
-  return `<div>${i}: ${contacts.name}</div> `;
+  return `<div>${i}: ${contacts.name}<br>${contacts.email}<br>${contacts.number} (${contacts.country})</div> `;
 }
