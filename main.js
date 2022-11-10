@@ -61,14 +61,21 @@ function displayByName() {
   let outputStr = "";
   for (i = 0; i < contacts.length; i++) {
     if (contacts[i].name == name) {
-      outputStr = getContactHTMLStr(contacts[i], i);
-    } else {
-      outputStr = "Contact Not Found";
+      outputStr += getContactHTMLStr(contacts[i], i);
     }
   }
   outputEl.innerHTML = outputStr;
 }
-function displayByCountry() {}
+function displayByCountry() {
+  let country = prompt("Enter Contacts Country");
+  let outputStr = "";
+  for (i = 0; i < contacts.length; i++) {
+    if (contacts[i].country == country) {
+      outputStr += getContactHTMLStr(contacts[i], i);
+    }
+  }
+  outputEl.innerHTML = outputStr;
+}
 
 // Helper Functions
 
