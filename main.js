@@ -46,6 +46,7 @@ function addContact() {
     newContact(contactsName, contactsEmail, contactsNumber, contactsCountry)
   );
   saveContacts();
+  outputEl.innerHTML = `New Contact Added:`;
 }
 
 function removeContact() {
@@ -53,25 +54,29 @@ function removeContact() {
   if (index >= 0 && index < contacts.length) {
     contacts.splice(index, 1);
     saveContacts();
+    outputEl.innerHTML = "Contact Removed";
   }
 }
 
 function displayByName() {
   let name = prompt("Enter Contacts Name");
-  let outputStr = "";
-  for (i = 0; i < contacts.length; i++) {
-    if (contacts[i].name == name) {
-      outputStr += getContactHTMLStr(contacts[i], i);
+  let outputStr = "Contact Not Found";
+  for (let i = 0; i < contacts.length; i++) {
+    if (contacts[i].name.includes(name)) {
+      outputStr = getContactHTMLStr(contacts[i], i);
+      break;
     }
   }
   outputEl.innerHTML = outputStr;
 }
+
 function displayByCountry() {
   let country = prompt("Enter Contacts Country");
-  let outputStr = "";
+  let outputStr = "Contact Not Found";
   for (i = 0; i < contacts.length; i++) {
-    if (contacts[i].country == country) {
-      outputStr += getContactHTMLStr(contacts[i], i);
+    if (contacts[i].country.includes(country)) {
+      outputStr = getContactHTMLStr(contacts[i], i);
+      break;
     }
   }
   outputEl.innerHTML = outputStr;
