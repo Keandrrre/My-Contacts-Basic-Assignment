@@ -25,6 +25,8 @@ function goBtnHandler() {
     displayByName();
   } else if (selection === "display-country") {
     displayByCountry();
+  } else if (selection === "display-email") {
+    displayByEmail();
   }
 }
 
@@ -42,28 +44,40 @@ function addContact() {
   let contactsEmail = prompt("Enter Contacts Email");
   let contactsNumber = prompt("Enter Contacts Phone #");
   let contactsCountry = prompt("Enter Contacts Country");
-  contacts.push(
-    newContact(contactsName, contactsEmail, contactsNumber, contactsCountry)
-  );
+  let index = findByEmail(contactsEmail);
+  if (index === -1) {
+    contacts.push(
+      newContact(contactsName, contactsEmail, contactsNumber, contactsCountry)
+    );
+    outputEl.innerHTML = `New Contact Added:`;
+  } else {
+    outputEl.innerHTML = "Email already in use";
+  }
   saveContacts();
-  outputEl.innerHTML = `New Contact Added:`;
 }
 
 function removeContact() {
-  let index = prompt("Enter # of Contact");
-  if (index >= 0 && index < contacts.length) {
-    contacts.splice(index, 1);
-    saveContacts();
-    outputEl.innerHTML = "Contact Removed";
+  let email = prompt("Enter Contacts Email");
+  for (i = 0; i < contacts.length; i++) {
+    if (contacts[i].email === email) {
+      contacts.splice(index, 1);
+      saveContacts();
+      outputEl.innerHTML = "Contact Removed";
+      break;
+    } else {
+      outputEl = "Contact Not Found";
+    }
   }
 }
 
 function displayByName() {
   let name = prompt("Enter Contacts Name");
-  let outputStr = "Contact Not Found";
+  let outputStr = "";
   for (let i = 0; i < contacts.length; i++) {
     if (contacts[i].name.includes(name)) {
-      outputStr = getContactHTMLStr(contacts[i], i);
+      outputStr += getContactHTMLStr(contacts[i], i);
+    } else {
+      ouputStr = "Contact Not Found";
       break;
     }
   }
@@ -80,6 +94,11 @@ function displayByCountry() {
     }
   }
   outputEl.innerHTML = outputStr;
+}
+
+function displayByEmail() {
+  let email = prompt("Enter Contacts Email");
+  let index = findByEmail(email);
 }
 
 // Helper Functions
@@ -104,4 +123,17 @@ function loadContacts() {
 
 function getContactHTMLStr(contacts, i) {
   return `<div>${i}: ${contacts.name}<br>${contacts.email}<br>${contacts.number} (${contacts.country})</div> `;
+}
+
+function findByEmail(email) {
+  let index = 0;
+  for (i = 0; i < contacts.length; i++) {
+    if (contacts[i].email === email) {
+      index = contacts[i];
+      break;
+    } else {
+      index = -1;
+    }
+  }
+  return index;
 }
