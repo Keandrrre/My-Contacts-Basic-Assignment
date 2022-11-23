@@ -58,15 +58,12 @@ function addContact() {
 
 function removeContact() {
   let email = prompt("Enter Contacts Email");
-  for (i = 0; i < contacts.length; i++) {
-    if (contacts[i].email === email) {
-      contacts.splice(index, 1);
-      saveContacts();
-      outputEl.innerHTML = "Contact Removed";
-      break;
-    } else {
-      outputEl = "Contact Not Found";
-    }
+  let index = findByEmail(email);
+  if (index === -1) {
+    outputEl.innerHTML = "Contact Not Found";
+  } else {
+    contacts.splice(index, 1);
+    outputEl.innerHTML = "Contact Removed";
   }
 }
 
@@ -74,8 +71,8 @@ function displayByName() {
   let name = prompt("Enter Contacts Name");
   let outputStr = "";
   for (let i = 0; i < contacts.length; i++) {
-    if (contacts[i].name.includes(name)) {
-      outputStr += getContactHTMLStr(contacts[i], i);
+    if (contacts[i].name.includes(name) && contacts.length > 0) {
+      outputStr += getContactHTMLStr(contacts, i);
     } else {
       ouputStr = "Contact Not Found";
       break;
@@ -99,6 +96,13 @@ function displayByCountry() {
 function displayByEmail() {
   let email = prompt("Enter Contacts Email");
   let index = findByEmail(email);
+  outputStr = "";
+  if (index === -1) {
+    outputStr = "Contact Not Found";
+  } else {
+    outputStr = getContactHTMLStr(contacts[i], i);
+  }
+  outputEl.innerHTML = outputStr;
 }
 
 // Helper Functions
@@ -126,13 +130,11 @@ function getContactHTMLStr(contacts, i) {
 }
 
 function findByEmail(email) {
-  let index = 0;
+  let index = -1;
   for (i = 0; i < contacts.length; i++) {
     if (contacts[i].email === email) {
       index = contacts[i];
       break;
-    } else {
-      index = -1;
     }
   }
   return index;
