@@ -72,10 +72,7 @@ function displayByName() {
   let outputStr = "";
   for (let i = 0; i < contacts.length; i++) {
     if (contacts[i].name.includes(name) && contacts.length > 0) {
-      outputStr += getContactHTMLStr(contacts, i);
-    } else {
-      ouputStr = "Contact Not Found";
-      break;
+      outputStr += getContactHTMLStr(contacts[i], i);
     }
   }
   outputEl.innerHTML = outputStr;
