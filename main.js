@@ -33,7 +33,7 @@ function goBtnHandler() {
 // MENU FUNCTIONS
 function displayContacts() {
   let outputStr = "";
-  for (i = 0; i < contacts.length; i++) {
+  for (let i = 0; i < contacts.length; i++) {
     outputStr += getContactHTMLStr(contacts[i], i);
   }
   outputEl.innerHTML = outputStr;
@@ -70,9 +70,13 @@ function removeContact() {
 function displayByName() {
   let name = prompt("Enter Contacts Name");
   let outputStr = "";
+  let count = 0;
   for (let i = 0; i < contacts.length; i++) {
+    count++;
     if (contacts[i].name.includes(name) && contacts.length > 0) {
       outputStr += getContactHTMLStr(contacts[i], i);
+    } else if (outputStr.length === 0 && count === contacts.length) {
+      outputStr = "No Contacts Found";
     }
   }
   outputEl.innerHTML = outputStr;
@@ -80,11 +84,14 @@ function displayByName() {
 
 function displayByCountry() {
   let country = prompt("Enter Contacts Country");
-  let outputStr = "Contact Not Found";
-  for (i = 0; i < contacts.length; i++) {
-    if (contacts[i].country.includes(country)) {
-      outputStr = getContactHTMLStr(contacts[i], i);
-      break;
+  let outputStr = "";
+  let count = 0;
+  for (let i = 0; i < contacts.length; i++) {
+    count++;
+    if (contacts[i].country.includes(country) && contacts.length > 0) {
+      outputStr += getContactHTMLStr(contacts[i], i);
+    } else if (outputStr.length === 0 && count === contacts.length) {
+      outputStr = "No Contacts Found";
     }
   }
   outputEl.innerHTML = outputStr;
@@ -130,7 +137,7 @@ function findByEmail(email) {
   let index = -1;
   for (i = 0; i < contacts.length; i++) {
     if (contacts[i].email === email) {
-      index = contacts[i];
+      index = i;
       break;
     }
   }
